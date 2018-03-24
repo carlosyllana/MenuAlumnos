@@ -15,6 +15,7 @@ namespace ConsoleApp2
         public String Dni { get; set; }
 
 
+
         public String salidaInformacion()
         {
             return  Id.ToString() + ", " + Nombre + ", " + Apellido + ", " + Dni;

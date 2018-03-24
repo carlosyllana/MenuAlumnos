@@ -54,36 +54,42 @@ namespace ConsoleApp2
 
         private static void escribirFichero()
         {
-
-            //Console.WriteLine("********Crear Usuario******");
-            //Console.WriteLine("Introduce Id:");
-            //int id = Int32.Parse(Console.ReadLine());
-            //Console.WriteLine("Introduce el Nombre:");
-            //String nombre = Console.ReadLine();
-            //Console.WriteLine("Introduce el apellido");
-            //String apellido = Console.ReadLine();
-            //Console.WriteLine("Introduce el dni");
-            //String dni = Console.ReadLine();
-            //Alumno nuevoAlumno = new Alumno(id, nombre, apellido, dni);
-            //Alumno nuevoAlumno = new Alumno(1, "nombre", "apellido", "dni");
+            DocumentsFactory docFact = new WriterDocuments();
+            Console.WriteLine("********Crear Usuario******");
+            Console.WriteLine("Introduce Id:");
+            int id = Int32.Parse(Console.ReadLine());
+            Console.WriteLine("Introduce el Nombre:");
+            String nombre = Console.ReadLine();
+            Console.WriteLine("Introduce el apellido");
+            String apellido = Console.ReadLine();
+            Console.WriteLine("Introduce el dni");
+            String dni = Console.ReadLine();
             Alumno nuevoAlumno = new Alumno
             {
-                Id = 1,
-                Nombre = "carlos",
-                Apellido = "yllana",
-                Dni = "yyyyy"
+                Id = id,
+                Nombre = nombre.ToString(),
+                Apellido = apellido.ToString(),
+                Dni = dni.ToString()
             };
+            //Alumno nuevoAlumno = new Alumno(id, nombre, apellido, dni);
+            /*  Alumno nuevoAlumno = new Alumno
+              {
+                  Id = 1,
+                  Nombre = "carlos",
+                  Apellido = "yllana",
+                  Dni = "yyyyy"
+              };*/
 
-
+            ConfigurationManager.RefreshSection("appSettings");
             int tipo = Int32.Parse( ConfigurationManager.AppSettings["tipoFichero"]);
             switch ((TipoFichero)tipo)
             {
                 case TipoFichero.TXT:
-                    escribirTxt(nuevoAlumno);
+                    docFact.writeTxtFile(nuevoAlumno);
 
                     break;
                 case TipoFichero.JSON:
-                    escribirJSON(nuevoAlumno);
+                    docFact.writeJsonFile(nuevoAlumno);
                     break;
             }
                     
@@ -107,7 +113,7 @@ namespace ConsoleApp2
             {
                 case TipoFichero.TXT:
                     value =(int) TipoFichero.TXT;
-                    config.AppSettings.Settings["miParametro"].Value = value.ToString();
+                    config.AppSettings.Settings["tipoFichero"].Value = value.ToString();
                     config.Save(ConfigurationSaveMode.Modified);
                     break;
                 case TipoFichero.JSON:
@@ -123,60 +129,6 @@ namespace ConsoleApp2
             }
 
         }
-
-        private static void escribirJSON(Alumno nuevoAlumno)
-        {
-            string path = "alumno.json";
-            if (!File.Exists(path))
-            {
-
-                using (StreamWriter file = File.CreateText(path))
-                {
-
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Formatting = Formatting.Indented;
-                    serializer.Serialize(file, nuevoAlumno);
-                    file.Write("\n");
-                }
-            }
-            else
-            {
-                using (StreamWriter file = new StreamWriter(path, true))
-                {
-
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Formatting = Formatting.Indented;
-                    serializer.Serialize(file, nuevoAlumno);
-                    file.Write("\n");
-                }
-
-            }
-
-            
-            
-        }
-        
-        private  static void escribirTxt(Alumno nuevoAlumno)
-        {
-            string path = "alumnos.txt";
-            if (!File.Exists(path))
-            {
-                using (var tw = File.CreateText(path))
-                {
-                    tw.WriteLine(nuevoAlumno.salidaInformacion());
-                }
-            }
-            else {
-                using (var tw = new StreamWriter(path, true))
-                {
-                    tw.WriteLine(nuevoAlumno.salidaInformacion());
-                }
-            }
-
-
-
-        }
-
 
     }
 }
