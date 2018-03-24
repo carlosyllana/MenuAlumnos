@@ -15,14 +15,13 @@ namespace ConsoleApp2
     class Program
     {
 
-        enum Day { TXT=1, JSON=2};
+        enum Opciones {SALIR, CREAR, CONFIGURAR};
         static void Main(string[] args)
         {
-            string[] acciones = { "0.Salir", "1.Crear Usuario", "2.Configurar" };
-            int identificador;
-          
-            int opc = -1;
+            string[] acciones = { "0.Salir", "1.Crear Usuario", "2.Configurar" };          
             String tipoFichero = ConfigurationManager.AppSettings["tipoFichero"];
+            int opc = -1;
+
             while (opc != 0)
             {
                 Console.WriteLine("\\\\\\\\MENU\\\\\\\\");
@@ -32,17 +31,19 @@ namespace ConsoleApp2
 
                 }
                 Console.WriteLine("--------------------");
-                Console.WriteLine("Escoge opcion:");
+                Console.Write("Escoge opcion: ");
                 opc = Int32.Parse(Console.ReadLine());
-                switch (opc)
+                switch ((Opciones) opc)
                 {
-
-
-                    case 1:
-                        escribirFichero(1);
+                    case Opciones.SALIR:
+                        Console.WriteLine("Hasta pronto");
+                        Console.ReadKey();
+                        break;
+                    case Opciones.CREAR:
+                        escribirFichero();
 
                         break;
-                    case 2:
+                    case Opciones.CONFIGURAR:
                         escogerConfiguracion();
                        
                         break;
@@ -53,7 +54,7 @@ namespace ConsoleApp2
         }
 
 
-        private static void escribirFichero(int metodo)
+        private static void escribirFichero()
         {
 
             //Console.WriteLine("********Crear Usuario******");
@@ -112,18 +113,35 @@ namespace ConsoleApp2
 
         }
 
-        private static void escribirJSON(Alumno miAlumno)
+        private static void escribirJSON(Alumno nuevoAlumno)
         {
-
-            //using (StreamWriter file = File.CreateText("alumno.json"))
-            using (StreamWriter file = new StreamWriter("alumno.json", true))
+            string path = "alumno.json";
+            if (!File.Exists(path))
             {
-                
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Formatting = Formatting.Indented;
-                serializer.Serialize(file, miAlumno);
-                file.Write("\n");
+
+                using (StreamWriter file = File.CreateText(path))
+                {
+
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Formatting = Formatting.Indented;
+                    serializer.Serialize(file, nuevoAlumno);
+                    file.Write("\n");
+                }
             }
+            else
+            {
+                using (StreamWriter file = new StreamWriter(path, true))
+                {
+
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Formatting = Formatting.Indented;
+                    serializer.Serialize(file, nuevoAlumno);
+                    file.Write("\n");
+                }
+
+            }
+
+            
             
         }
         
@@ -132,18 +150,20 @@ namespace ConsoleApp2
             string path = "alumnos.txt";
             if (!File.Exists(path))
             {
-                File.Create(path);
-                TextWriter tw = new StreamWriter(path);
-                tw.WriteLine(nuevoAlumno.salidaInformacion());
-                tw.Close();
+                using (var tw = File.CreateText(path))
+                {
+                    tw.WriteLine(nuevoAlumno.salidaInformacion());
+                }
             }
-            else if (File.Exists(path))
-            {
+            else {
                 using (var tw = new StreamWriter(path, true))
                 {
                     tw.WriteLine(nuevoAlumno.salidaInformacion());
                 }
             }
+
+
+
         }
 
 
