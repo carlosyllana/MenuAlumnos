@@ -115,31 +115,16 @@ namespace ConsoleApp2
         private static void escribirJSON(Alumno miAlumno)
         {
 
-
-            /*JsonSerializer serializer = new JsonSerializer();
-            serializer.Converters.Add(new JavaScriptDateTimeConverter());
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-
-            using (StreamWriter sw = new StreamWriter("alumno.json", true ))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, miAlumno);
-               // {"ExpiryDate":new Date(1230375600000),"Price":0}
-            }*/
-
-            // serialize JSON to a string and then write string to a file
-
-
-            // serialize JSON directly to a file
-            Console.WriteLine(miAlumno.salidaInformacion());
-            // serialize JSON directly to a file
-
             //using (StreamWriter file = File.CreateText("alumno.json"))
             using (StreamWriter file = new StreamWriter("alumno.json", true))
             {
+                
                 JsonSerializer serializer = new JsonSerializer();
+                serializer.Formatting = Formatting.Indented;
                 serializer.Serialize(file, miAlumno);
+                file.Write("\n");
             }
+            
         }
         
         private  static void escribirTxt(Alumno nuevoAlumno)
