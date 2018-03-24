@@ -16,10 +16,11 @@ namespace ConsoleApp2
     {
 
         enum Opciones {SALIR, CREAR, CONFIGURAR};
+        enum TipoFichero { TXT=1, JSON=2};
         static void Main(string[] args)
         {
             string[] acciones = { "0.Salir", "1.Crear Usuario", "2.Configurar" };          
-            String tipoFichero = ConfigurationManager.AppSettings["tipoFichero"];
+         
             int opc = -1;
 
             while (opc != 0)
@@ -41,16 +42,13 @@ namespace ConsoleApp2
                         break;
                     case Opciones.CREAR:
                         escribirFichero();
-
+                        
                         break;
                     case Opciones.CONFIGURAR:
-                        escogerConfiguracion();
-                       
+                        escogerConfiguracion();                   
                         break;
                 }
             }
-
-
         }
 
 
@@ -76,10 +74,24 @@ namespace ConsoleApp2
                 Dni = "yyyyy"
             };
 
-            escribirJSON(nuevoAlumno);
+
+            int tipo = Int32.Parse( ConfigurationManager.AppSettings["tipoFichero"]);
+            switch ((TipoFichero)tipo)
+            {
+                case TipoFichero.TXT:
+                    escribirTxt(nuevoAlumno);
+
+                    break;
+                case TipoFichero.JSON:
+                    escribirJSON(nuevoAlumno);
+                    break;
+            }
+                    
         }
 
-        private static int  escogerConfiguracion(){
+        private static void  escogerConfiguracion(){
+
+            int value = 0;
             string[] acciones = { "1.TXT", "2.JSON" };
             Console.WriteLine("********En que formato quieres serializar el alumno?******");
             for (int i = 0; i < acciones.Length; i++)
@@ -91,23 +103,22 @@ namespace ConsoleApp2
             Console.WriteLine("Escoge opcion:");
             int tipo = Int32.Parse(Console.ReadLine());
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            switch (tipo)
+            switch ((TipoFichero) tipo)
             {
-                case 1:
-                   
-                    config.AppSettings.Settings["miParametro"].Value = "TXT";
+                case TipoFichero.TXT:
+                    value =(int) TipoFichero.TXT;
+                    config.AppSettings.Settings["miParametro"].Value = value.ToString();
                     config.Save(ConfigurationSaveMode.Modified);
-                    return 1;
                     break;
-                case 2:
-                    config.AppSettings.Settings["tipoFichero"].Value = "JSON";
+                case TipoFichero.JSON:
+                     value = (int)TipoFichero.JSON;
+                    config.AppSettings.Settings["tipoFichero"].Value = value.ToString();
                     config.Save(ConfigurationSaveMode.Modified);
-                    return 2;
                     break;
                 default:
-                    config.AppSettings.Settings["tipoFichero"].Value = "TXT";
+                    value = (int)TipoFichero.TXT;
+                    config.AppSettings.Settings["miParametro"].Value = value.ToString();
                     config.Save(ConfigurationSaveMode.Modified);
-                    return 1;
                     break;
             }
 
