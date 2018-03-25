@@ -10,13 +10,16 @@ namespace ConsoleApp2
 {
     class WriterDocuments : DocumentsFactory
     {
-        public void writeJsonFile(Alumno nuevoAlumno)
+        private static String JSONPATH = "alumno.json";
+        private static String TXTPATH = "alumno.txt";
+
+        public void WriteJsonFile(Alumno nuevoAlumno)
         {
-            string path = "alumno.json";
-            if (!File.Exists(path))
+          
+            if (!File.Exists(JSONPATH))
             {
 
-                using (StreamWriter file = File.CreateText(path))
+                using (StreamWriter file = File.CreateText(JSONPATH))
                 {
 
                     JsonSerializer serializer = new JsonSerializer();
@@ -27,7 +30,7 @@ namespace ConsoleApp2
             }
             else
             {
-                using (StreamWriter file = new StreamWriter(path, true))
+                using (StreamWriter file = new StreamWriter(JSONPATH, true))
                 {
 
                     JsonSerializer serializer = new JsonSerializer();
@@ -39,21 +42,20 @@ namespace ConsoleApp2
             }
         }
 
-        public void writeTxtFile(Alumno nuevoAlumno)
+        public void WriteTxtFile(Alumno nuevoAlumno)
         {
-            string path = "alumnos.txt";
-            if (!File.Exists(path))
+            if (!File.Exists(TXTPATH))
             {
-                using (var tw = File.CreateText(path))
+                using (var tw = File.CreateText(TXTPATH))
                 {
-                    tw.WriteLine(nuevoAlumno.salidaInformacion());
+                    tw.WriteLine(nuevoAlumno.ToString());
                 }
             }
             else
             {
-                using (var tw = new StreamWriter(path, true))
+                using (var tw = new StreamWriter(TXTPATH, true))
                 {
-                    tw.WriteLine(nuevoAlumno.salidaInformacion());
+                    tw.WriteLine(nuevoAlumno.ToString());
                 }
             }
         }

@@ -15,10 +15,10 @@ namespace ConsoleApp2
         public String Dni { get; set; }
 
 
-
-        public String salidaInformacion()
+        public override string ToString()
         {
-            return  Id.ToString() + ", " + Nombre + ", " + Apellido + ", " + Dni;
+            return Id.ToString() + ", " + Nombre + ", " + Apellido + ", " + Dni;
         }
+
     }
 }

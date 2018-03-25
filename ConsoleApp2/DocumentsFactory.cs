@@ -8,7 +8,7 @@ namespace ConsoleApp2
 {
     interface DocumentsFactory
     {
-        void writeTxtFile(Alumno nuevoAlumno);
-        void writeJsonFile(Alumno nuevoAlumno);
+        void WriteTxtFile(Alumno nuevoAlumno);
+        void WriteJsonFile(Alumno nuevoAlumno);
     }
 }

@@ -41,28 +41,28 @@ namespace ConsoleApp2
                         Console.ReadKey();
                         break;
                     case Opciones.CREAR:
-                        escribirFichero();
+                        EscribirFichero();
                         
                         break;
                     case Opciones.CONFIGURAR:
-                        escogerConfiguracion();                   
+                        EscogerConfiguracion();                   
                         break;
                 }
             }
         }
 
 
-        private static void escribirFichero()
+        private static void EscribirFichero()
         {
             DocumentsFactory docFact = new WriterDocuments();
-            Console.WriteLine("********Crear Usuario******");
+            Console.WriteLine("********Crear Usuario********");
             Console.WriteLine("Introduce Id:");
             int id = Int32.Parse(Console.ReadLine());
             Console.WriteLine("Introduce el Nombre:");
             String nombre = Console.ReadLine();
-            Console.WriteLine("Introduce el apellido");
+            Console.WriteLine("Introduce el apellido:");
             String apellido = Console.ReadLine();
-            Console.WriteLine("Introduce el dni");
+            Console.WriteLine("Introduce el DNI:");
             String dni = Console.ReadLine();
             Alumno nuevoAlumno = new Alumno
             {
@@ -71,35 +71,27 @@ namespace ConsoleApp2
                 Apellido = apellido.ToString(),
                 Dni = dni.ToString()
             };
-            //Alumno nuevoAlumno = new Alumno(id, nombre, apellido, dni);
-            /*  Alumno nuevoAlumno = new Alumno
-              {
-                  Id = 1,
-                  Nombre = "carlos",
-                  Apellido = "yllana",
-                  Dni = "yyyyy"
-              };*/
 
             ConfigurationManager.RefreshSection("appSettings");
             int tipo = Int32.Parse( ConfigurationManager.AppSettings["tipoFichero"]);
             switch ((TipoFichero)tipo)
             {
                 case TipoFichero.TXT:
-                    docFact.writeTxtFile(nuevoAlumno);
+                    docFact.WriteTxtFile(nuevoAlumno);
 
                     break;
                 case TipoFichero.JSON:
-                    docFact.writeJsonFile(nuevoAlumno);
+                    docFact.WriteJsonFile(nuevoAlumno);
                     break;
             }
                     
         }
 
-        private static void  escogerConfiguracion(){
+        private static void  EscogerConfiguracion(){
 
             int value = 0;
             string[] acciones = { "1.TXT", "2.JSON" };
-            Console.WriteLine("********En que formato quieres serializar el alumno?******");
+            Console.WriteLine("********Guardar en formato:******");
             for (int i = 0; i < acciones.Length; i++)
             {
                 Console.WriteLine(acciones[i].ToString());
@@ -123,7 +115,7 @@ namespace ConsoleApp2
                     break;
                 default:
                     value = (int)TipoFichero.TXT;
-                    config.AppSettings.Settings["miParametro"].Value = value.ToString();
+                    config.AppSettings.Settings["tipoFichero"].Value = value.ToString();
                     config.Save(ConfigurationSaveMode.Modified);
                     break;
             }
