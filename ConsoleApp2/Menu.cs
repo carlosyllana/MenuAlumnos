@@ -22,6 +22,9 @@ namespace ConsoleApp2
             string[] acciones = { "0.Salir", "1.Crear Usuario", "2.Configurar" };          
          
             int opc = -1;
+            DocumentsFactory docFact = new WriterDocuments();
+
+
 
             while (opc != 0)
             {
@@ -41,7 +44,7 @@ namespace ConsoleApp2
                         Console.ReadKey();
                         break;
                     case Opciones.CREAR:
-                        EscribirFichero();
+                        CrearUsuario();
                         
                         break;
                     case Opciones.CONFIGURAR:
@@ -49,10 +52,12 @@ namespace ConsoleApp2
                         break;
                 }
             }
+
+            
         }
 
 
-        private static void EscribirFichero()
+        private static void CrearUsuario()
         {
             DocumentsFactory docFact = new WriterDocuments();
             Console.WriteLine("********Crear Usuario********");
@@ -64,13 +69,7 @@ namespace ConsoleApp2
             String apellido = Console.ReadLine();
             Console.WriteLine("Introduce el DNI:");
             String dni = Console.ReadLine();
-            Alumno nuevoAlumno = new Alumno
-            {
-                Id = id,
-                Nombre = nombre.ToString(),
-                Apellido = apellido.ToString(),
-                Dni = dni.ToString()
-            };
+            Alumno nuevoAlumno = new Alumno( id, nombre.ToString(), apellido.ToString(), dni.ToString());
 
             ConfigurationManager.RefreshSection("appSettings");
             int tipo = Int32.Parse( ConfigurationManager.AppSettings["tipoFichero"]);

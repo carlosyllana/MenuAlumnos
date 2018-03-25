@@ -10,5 +10,7 @@ namespace ConsoleApp2
     {
         void WriteTxtFile(Alumno nuevoAlumno);
         void WriteJsonFile(Alumno nuevoAlumno);
+        List<Alumno> ReaderTxtFile();
+        List<Alumno> ReaderJsonFile();
     }
 }

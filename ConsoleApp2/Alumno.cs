@@ -14,11 +14,43 @@ namespace ConsoleApp2
         public String Apellido { get; set; }
         public String Dni { get; set; }
 
+        public Alumno(int id, string nombre, string apellido, string dni)
+        {
+            Id = id;
+            Nombre = nombre;
+            Apellido = apellido;
+            Dni = dni;
+        }
+
 
         public override string ToString()
         {
-            return Id.ToString() + ", " + Nombre + ", " + Apellido + ", " + Dni;
+            return Id.ToString() + "," + Nombre + "," + Apellido + "," + Dni;
         }
+
+        public override bool Equals(object obj)
+        {
+            var alumno = obj as Alumno;
+            return alumno != null &&
+                   Id == alumno.Id &&
+                   Nombre == alumno.Nombre &&
+                   Apellido == alumno.Apellido &&
+                   Dni == alumno.Dni;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1910929195;
+            hashCode = hashCode * -1521134295 + Id.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Nombre);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Apellido);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Dni);
+            return hashCode;
+        }
+
+
+
+
 
     }
 }
