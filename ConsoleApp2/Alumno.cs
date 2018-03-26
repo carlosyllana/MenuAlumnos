@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp2
 {
-    class Alumno
+    public class Alumno
     {
 
         public int Id { get; set; }
         public String Nombre { get; set; }
         public String Apellido { get; set; }
         public String Dni { get; set; }
+
+        public Alumno() { }
 
         public Alumno(int id, string nombre, string apellido, string dni)
         {

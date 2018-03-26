@@ -1,28 +1,23 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using static ConsoleApp2.Enums;
 
 namespace ConsoleApp2
 {
-    class Program
+    class Menu
     {
 
-        enum Opciones {SALIR, CREAR, CONFIGURAR};
-        enum TipoFichero { TXT=1, JSON=2};
-        static void Main(string[] args)
+
+        public void IniciarMenu()
         {
-            string[] acciones = { "0.Salir", "1.Crear Usuario", "2.Configurar" };          
-         
+            string[] acciones = { "0.Salir", "1.Crear Usuario", "2.Configurar" };
+
             int opc = -1;
-            DocumentsFactory docFact = new WriterDocuments();
+            DocumentsFactory docFact = new DocumentsManager();
 
 
 
@@ -37,7 +32,7 @@ namespace ConsoleApp2
                 Console.WriteLine("--------------------");
                 Console.Write("Escoge opcion: ");
                 opc = Int32.Parse(Console.ReadLine());
-                switch ((Opciones) opc)
+                switch ((Opciones)opc)
                 {
                     case Opciones.SALIR:
                         Console.WriteLine("Hasta pronto");
@@ -45,21 +40,21 @@ namespace ConsoleApp2
                         break;
                     case Opciones.CREAR:
                         CrearUsuario();
-                        
+
                         break;
                     case Opciones.CONFIGURAR:
-                        EscogerConfiguracion();                   
+                        EscogerConfiguracion();
                         break;
                 }
             }
 
-            
+
         }
 
 
         private static void CrearUsuario()
         {
-            DocumentsFactory docFact = new WriterDocuments();
+            DocumentsFactory docFact = new DocumentsManager();
             Console.WriteLine("********Crear Usuario********");
             Console.WriteLine("Introduce Id:");
             int id = Int32.Parse(Console.ReadLine());
@@ -69,10 +64,10 @@ namespace ConsoleApp2
             String apellido = Console.ReadLine();
             Console.WriteLine("Introduce el DNI:");
             String dni = Console.ReadLine();
-            Alumno nuevoAlumno = new Alumno( id, nombre.ToString(), apellido.ToString(), dni.ToString());
+            Alumno nuevoAlumno = new Alumno(id, nombre.ToString(), apellido.ToString(), dni.ToString());
 
             ConfigurationManager.RefreshSection("appSettings");
-            int tipo = Int32.Parse( ConfigurationManager.AppSettings["tipoFichero"]);
+            int tipo = Int32.Parse(ConfigurationManager.AppSettings["tipoFichero"]);
             switch ((TipoFichero)tipo)
             {
                 case TipoFichero.TXT:
@@ -83,10 +78,11 @@ namespace ConsoleApp2
                     docFact.WriteJsonFile(nuevoAlumno);
                     break;
             }
-                    
+
         }
 
-        private static void  EscogerConfiguracion(){
+        private static void EscogerConfiguracion()
+        {
 
             int value = 0;
             string[] acciones = { "1.TXT", "2.JSON" };
@@ -100,15 +96,15 @@ namespace ConsoleApp2
             Console.WriteLine("Escoge opcion:");
             int tipo = Int32.Parse(Console.ReadLine());
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            switch ((TipoFichero) tipo)
+            switch ((TipoFichero)tipo)
             {
                 case TipoFichero.TXT:
-                    value =(int) TipoFichero.TXT;
+                    value = (int)TipoFichero.TXT;
                     config.AppSettings.Settings["tipoFichero"].Value = value.ToString();
                     config.Save(ConfigurationSaveMode.Modified);
                     break;
                 case TipoFichero.JSON:
-                     value = (int)TipoFichero.JSON;
+                    value = (int)TipoFichero.JSON;
                     config.AppSettings.Settings["tipoFichero"].Value = value.ToString();
                     config.Save(ConfigurationSaveMode.Modified);
                     break;
@@ -123,4 +119,3 @@ namespace ConsoleApp2
 
     }
 }
-

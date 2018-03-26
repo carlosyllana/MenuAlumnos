@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp2
 {
-    interface DocumentsFactory
+    public interface DocumentsFactory
     {
         void WriteTxtFile(Alumno nuevoAlumno);
         void WriteJsonFile(Alumno nuevoAlumno);

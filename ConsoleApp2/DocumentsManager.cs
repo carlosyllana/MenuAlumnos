@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp2
 {
-    class WriterDocuments : DocumentsFactory
+    public class DocumentsManager : DocumentsFactory
     {
         private static String JSONPATH = "alumnos.json";
         private static String TXTPATH = "alumnos.txt";
@@ -34,7 +34,6 @@ namespace ConsoleApp2
         {
             string line;
             List<Alumno> alumnosList = new List<Alumno>();
-            // Read the file and display it line by line.  
             using (StreamReader file =new StreamReader(@TXTPATH))
             {
                 while ((line = file.ReadLine()) != null)
@@ -48,7 +47,6 @@ namespace ConsoleApp2
             }
                 
            
-            // Suspend the screen.  
             return alumnosList;
         }
 
