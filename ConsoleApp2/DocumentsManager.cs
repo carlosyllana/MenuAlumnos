@@ -108,5 +108,24 @@ namespace ConsoleApp2
                 }
             }
         }
+
+        public string GetJsonPath()
+        {
+
+            //jsonFile
+            string value = Environment.GetEnvironmentVariable("jsonFile", EnvironmentVariableTarget.User);
+            return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + " \\" + value;
+;
+        }
+
+        public string GetTxtPath()
+        {
+            //txtFile
+            string value;
+
+            value = Environment.GetEnvironmentVariable("txtFile", EnvironmentVariableTarget.User);
+            return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + value;
+;
+        }
     }
 }

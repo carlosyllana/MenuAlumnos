@@ -20,16 +20,7 @@ namespace UnitTestProject1
             Alumno alumno1 = new Alumno(id, nombre, apellido, dni);
             docFact.WriteTxtFile(alumno1);
             alumnoList = docFact.ReaderTxtFile();
-            foreach(var al in alumnoList)
-            {
-                if (al.Equals(alumno1))
-                {
-                    alumno = al;
-                    break;
-                }
-            }
-
-            Assert.IsTrue(alumno.Equals(alumno1));
+            Assert.IsTrue(alumnoList.Contains(alumno1));
 
         }
 
@@ -41,16 +32,8 @@ namespace UnitTestProject1
             Alumno alumno1 = new Alumno(id, nombre, apellido, dni);
             docFact.WriteJsonFile(alumno1);
             alumnoList = docFact.ReaderJsonFile();
-            foreach (var al in alumnoList)
-            {
-                if (al.Equals(alumno1))
-                {
-                    alumno = al;
-                    break;
-                }
-            }
 
-            Assert.IsTrue(alumno.Equals(alumno1));
+            Assert.IsTrue(alumnoList.Contains(alumno1));
 
         }
        
